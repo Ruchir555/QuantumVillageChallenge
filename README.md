@@ -31,6 +31,18 @@ python -m pip install jupyterlab
 jupyter lab QuantumVillageChallenge.ipynb
 ```
 
+## Tests and continuous integration
+
+The pure functions in `qkd_solution.py` implement basis reconciliation, bit
+packing and XOR decryption without notebook state. Run their tests with:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+GitHub Actions runs these tests on Python 3.11 and 3.13 for every push and
+pull request. The regression suite includes the known challenge plaintext.
+
 ## Attribution and licensing status
 
 The basis strings, measurement bits and ciphertext were supplied as challenge
