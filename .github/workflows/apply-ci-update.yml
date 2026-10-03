@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - prepared-ci.patch.gz
+      - .github/workflows/apply-ci-update.yml
 
 permissions:
   contents: write
@@ -19,7 +20,7 @@ jobs:
       - name: Apply prepared changes
         run: |
           gzip -dc prepared-ci.patch.gz > /tmp/prepared-ci.patch
-          git apply --index --binary /tmp/prepared-ci.patch
+          git apply --index --binary --exclude=.github/workflows/ci.yml /tmp/prepared-ci.patch
           git rm prepared-ci.patch.gz
           git rm .github/workflows/apply-ci-update.yml
           git config user.name "github-actions[bot]"
