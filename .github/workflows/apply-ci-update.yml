@@ -1,0 +1,28 @@
+name: Apply prepared CI update
+
+on:
+  push:
+    paths:
+      - prepared-ci.patch.gz
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Apply prepared changes
+        run: |
+          gzip -dc prepared-ci.patch.gz > /tmp/prepared-ci.patch
+          git apply --index --binary /tmp/prepared-ci.patch
+          git rm prepared-ci.patch.gz
+          git rm .github/workflows/apply-ci-update.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Add tested QKD utilities and CI"
+          git push
